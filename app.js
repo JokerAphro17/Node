@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const res = require("express/lib/response");
-const { success } = require("./helper");
+const { success, uniqueId } = require("./helper");
 const favicon = require("serve-favicon");
 let pokemons = require("./pokemon.js");
 
@@ -11,7 +11,7 @@ app.use((req, res, next) => {
   console.log(`URL :  ${req.path}`);
   next();
 });
-app.use(favicon(__dirname + "/favicon.icon")).use(morgan("dev"));
+app.use(favicon(__dirname + "/favicon.ico")).use(morgan("dev"));
 
 app.get("/", (req, res) => res.send("Hello again, Express !"));
 
@@ -26,6 +26,16 @@ app.get("/api/pokemons/:id", (req, res) => {
   const pokemon = pokemons.find((pokemon) => pokemon.id === id);
   const message = "Un pokémon a bien été trouvé.";
   res.json(success(message, pokemon));
+});
+
+app.post("/api/pokemons", (req, res) => {
+  const newPokemon = {
+    ...req.body,
+    ...{ id: uniqueId(pokemons), created: new Date() },
+  };
+  pokemons.push(newPokemon);
+  const message = "Un nouveau pokémon a bien été ajouté.";
+  res.json(success(message, newPokemon));
 });
 
 app.listen(port, () =>
