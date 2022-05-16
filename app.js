@@ -1,22 +1,35 @@
 const express = require("express");
+const morgan = require("morgan");
+const res = require("express/lib/response");
+const { success } = require("./helper");
+const favicon = require("serve-favicon");
+let pokemons = require("./pokemon.js");
+
 const app = express();
 const port = 3000;
-const pokemons = require("./pokemon.js");
-const helper = require("./helper.js");
+app.use((req, res, next) => {
+  console.log(`URL :  ${req.path}`);
+  next();
+});
+app.use(favicon(__dirname + "/favicon.icon")).use(morgan("dev"));
 
-app.get("/", (req, res) => res.send("Hello Aphro!"));
+app.get("/", (req, res) => res.send("Hello again, Express !"));
 
-app.get("/api/pokemon/:id", (req, res) => {
+// On retourne la liste des pokémons au format JSON, avec un message :
+app.get("/api/pokemons", (req, res) => {
+  const message = "La liste des pokémons a bien été récupérée.";
+  res.json(success(message, pokemons));
+});
+
+app.get("/api/pokemons/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const message = "un pokemon a été trouvé";
   const pokemon = pokemons.find((pokemon) => pokemon.id === id);
-  res.json(helper.success(pokemon, message));
+  const message = "Un pokémon a bien été trouvé.";
+  res.json(success(message, pokemon));
 });
 
-app.get("/api/pokemon", (req, res) => {
-  res.send(
-    "il y a " + pokemons.length + " pokemons dans le pokedex pour le moment "
-  );
-});
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () =>
+  console.log(
+    `Notre application Node est démarrée sur : http://localhost:${port}`
+  )
+);

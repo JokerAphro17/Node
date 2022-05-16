@@ -1,3 +1,8 @@
-const success = (mesage, data) => {
-  return { mesage, data };
+module.exports = {
+  success: function (message, data) {
+    return {
+      message: message,
+      data: data,
+    };
+  },
 };
