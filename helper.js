@@ -10,4 +10,9 @@ module.exports = {
     const maxId = pokemonsId.reduce((max, id) => (id > max ? id : max));
     return maxId + 1;
   },
+  error: function (message) {
+    return {
+      message: message,
+    };
+  },
 };
