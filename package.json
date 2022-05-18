@@ -4,7 +4,8 @@
   "description": "An awesome Api rest to handle some pockemon ",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "NODE_ENV=production node app.js",
+    "dev": "NODE_ENV=development denodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +16,6 @@
   "dependencies": {
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
-    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.19.0",
