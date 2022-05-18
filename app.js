@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(favicon(__dirname + "/favicon.ico")).use(bodyParser.json());
-
+console.log(process.env);
 sequelize.initDb();
 app.get("/", (req, res) => {
   res.json("Hello heroku");
